@@ -15,25 +15,44 @@ const reducer = (acc: number, curr: number): number => acc + curr;
 const getRating = (days: number, hours: number): number => {
   const average = hours / days
   if (average < 2) {
-    return 1
+    return 1;
   } else if (average >= 2 && average < 3) {
-    return 2
+    return 2;
   } else if (average >= 3) {
-    return 3
+    return 3;
   }
 }
 
 const getRatingDescription = (rating: number): trainingRating => {
   if (rating < 1) {
-    return 'bad'
+    return 'bad';
   } else if (rating >= 1 && rating < 2) {
-    return 'pretty good'
+    return 'pretty good';
   } else if (rating >= 2 && rating < 3) {
-    return 'good'
+    return 'good';
   } else if (rating >= 3) {
-    return 'very good'
+    return 'very good';
   }
 }
+
+interface execiseData {
+  target: number;
+  trainingData: Array<number>;
+}
+
+const parseArguments = (args: Array<string>): execiseData => {
+
+  const data = args.slice(2).map(v => Number(v));
+  if (!data.some(isNaN)) {
+    return {
+      target: data[0],
+      trainingData: data.slice(1)
+    }
+  } else {
+    throw new Error('Some provided values were not numbers!');
+  }
+}
+
 
 const calculateExercises = (trainingData: Array<number>, target: number): trainingResult => {
   const totalDays = trainingData.length;
@@ -52,4 +71,9 @@ const calculateExercises = (trainingData: Array<number>, target: number): traini
   }
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+  const { target, trainingData } = parseArguments(process.argv);
+  console.log(calculateExercises(trainingData, target));
+} catch (e) {
+  console.log('Error, something bad happened, message: ', e.message);
+}
