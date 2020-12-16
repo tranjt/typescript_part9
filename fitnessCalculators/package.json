@@ -1,11 +1,12 @@
 {
-  "name": "exercisecalculator",
+  "name": "bmicalculator",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "ts-node": "ts-node",
-    "calculateExercises": "ts-node exerciseCalculator.ts"
+    "calculateBmi": "ts-node bmiCalculator.ts",
+	"calculateExercises": "ts-node exerciseCalculator.ts"
   },
   "author": "tjtran",
   "license": "ISC",
