@@ -54,7 +54,7 @@ const parseTrainingArguments = (args: Array<string>): execiseData => {
 };
 
 
-const calculateExercises = (trainingData: Array<number>, target: number): trainingResult => {
+export const calculateExercises = (trainingData: Array<number>, target: number): trainingResult => {
   const totalDays = trainingData.length;
   const trainingDays = trainingData.filter(Number);
   const totalHours = trainingData.reduce(reducer, 0);
