@@ -20,11 +20,11 @@ const parseBMIArguments = (args: Array<string>): BodyValues => {
     return {
       height: Number(args[2]),
       weight: Number(args[3])
-    }
+    };
   } else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
 export const calculateBmi = (height: number, weight: number): BMICategory | undefined => {
   const BMI = weight / Math.pow((height / 100), 2);
@@ -47,12 +47,13 @@ export const calculateBmi = (height: number, weight: number): BMICategory | unde
     return 'Obese Class III (Very severely obese)';
   }
   return undefined;
-}
+};
 
 try {
   const { height, weight } = parseBMIArguments(process.argv);
-  console.log(calculateBmi(height, weight))
+  console.log(calculateBmi(height, weight));
 
 } catch (e) {
-  console.log('Error, something bad happened, message: ', e.message);
+  const error = e as Error;
+  console.log('Error, something bad happened, message: ', error.message);
 }

@@ -13,7 +13,7 @@ interface trainingResult {
 const reducer = (acc: number, curr: number): number => acc + curr;
 
 const getRating = (days: number, hours: number): number => {
-  const average = hours / days
+  const average = hours / days;
   if (average < 2) {
     return 1;
   } else if (average >= 2 && average < 3) {
@@ -22,7 +22,7 @@ const getRating = (days: number, hours: number): number => {
     return 3;
   }
   return 0;
-}
+};
 
 const getRatingDescription = (rating: number): trainingRating => {
   if (rating >= 1 && rating < 2) {
@@ -33,7 +33,7 @@ const getRatingDescription = (rating: number): trainingRating => {
     return 'very good';
   }
   return 'bad';
-}
+};
 
 interface execiseData {
   target: number;
@@ -47,11 +47,11 @@ const parseTrainingArguments = (args: Array<string>): execiseData => {
     return {
       target: data[0],
       trainingData: data.slice(1)
-    }
+    };
   } else {
     throw new Error('Some provided values were not numbers!');
   }
-}
+};
 
 
 const calculateExercises = (trainingData: Array<number>, target: number): trainingResult => {
@@ -68,12 +68,13 @@ const calculateExercises = (trainingData: Array<number>, target: number): traini
     ratingDescription: getRatingDescription(rating),
     target,
     average: totalHours / totalDays,
-  }
-}
+  };
+};
 
 try {
   const { target, trainingData } = parseTrainingArguments(process.argv);
   console.log(calculateExercises(trainingData, target));
 } catch (e) {
-  console.log('Error, something bad happened, message: ', e.message);
+  const error = e as Error;
+  console.log('Error, something bad happened, message: ', error.message);
 }

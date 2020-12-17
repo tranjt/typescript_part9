@@ -1,5 +1,5 @@
 import express from 'express';
-import { calculateBmi } from './bmicalculator'
+import { calculateBmi } from './bmicalculator';
 const app = express();
 
 app.get('/hello', (_req, res) => {
@@ -14,13 +14,13 @@ app.get('/bmi', (req, res) => {
       weight,
       height,
       bmi: calculateBmi(Number(height), Number(weight))
-    })
+    });
   } else {
     res.send({
       error: "malformatted parameters"
-    })
+    });
   }
-})
+});
 
 const PORT = 3003;
 
