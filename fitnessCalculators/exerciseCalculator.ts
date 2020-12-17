@@ -21,18 +21,18 @@ const getRating = (days: number, hours: number): number => {
   } else if (average >= 3) {
     return 3;
   }
+  return 0;
 }
 
 const getRatingDescription = (rating: number): trainingRating => {
-  if (rating < 1) {
-    return 'bad';
-  } else if (rating >= 1 && rating < 2) {
+  if (rating >= 1 && rating < 2) {
     return 'pretty good';
   } else if (rating >= 2 && rating < 3) {
     return 'good';
   } else if (rating >= 3) {
     return 'very good';
   }
+  return 'bad';
 }
 
 interface execiseData {
