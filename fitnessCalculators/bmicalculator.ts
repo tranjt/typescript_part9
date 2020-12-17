@@ -12,7 +12,7 @@ interface BodyValues {
   height: number;
   weight: number;
 }
-const parseArguments = (args: Array<string>): BodyValues => {
+const parseBMIArguments = (args: Array<string>): BodyValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.length > 4) throw new Error('Too many arguments');
 
@@ -49,7 +49,7 @@ const calculateBmi = (height: number, weight: number): BMICategory => {
 }
 
 try {
-  const { height, weight } = parseArguments(process.argv);
+  const { height, weight } = parseBMIArguments(process.argv);
   console.log(calculateBmi(height, weight))
 
 } catch (e) {

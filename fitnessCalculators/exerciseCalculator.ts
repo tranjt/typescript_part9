@@ -40,7 +40,7 @@ interface execiseData {
   trainingData: Array<number>;
 }
 
-const parseArguments = (args: Array<string>): execiseData => {
+const parseTrainingArguments = (args: Array<string>): execiseData => {
 
   const data = args.slice(2).map(v => Number(v));
   if (!data.some(isNaN)) {
@@ -72,7 +72,7 @@ const calculateExercises = (trainingData: Array<number>, target: number): traini
 }
 
 try {
-  const { target, trainingData } = parseArguments(process.argv);
+  const { target, trainingData } = parseTrainingArguments(process.argv);
   console.log(calculateExercises(trainingData, target));
 } catch (e) {
   console.log('Error, something bad happened, message: ', e.message);
