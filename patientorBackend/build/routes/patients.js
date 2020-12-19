@@ -9,7 +9,17 @@ const router = express_1.default.Router();
 router.get('/', (_req, res) => {
     res.send(patientService_1.default.getNonSensitivePatientData());
 });
-router.post('/', (_req, res) => {
-    res.send('Saving a patient data!');
+router.post('/', (req, res) => {
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+    /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+    const { name, dateOfBirth, ssn, gender, occupation } = req.body;
+    const newPatientEntry = patientService_1.default.addPatient({
+        name,
+        dateOfBirth,
+        ssn,
+        gender,
+        occupation
+    });
+    res.json(newPatientEntry);
 });
 exports.default = router;
