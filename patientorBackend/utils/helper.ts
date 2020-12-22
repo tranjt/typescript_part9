@@ -53,10 +53,11 @@ const parseOccupation = (occupation: any): string => {
 export const toNewPatientEntry = (object: any): NewPatientEntry => {
   return {
     name: parseName(object.name),
-    dateOfBirth: parseDate(object.date),
+    dateOfBirth: parseDate(object.dateOfBirth),
     ssn: parseSSN(object.ssn),
     gender: parseGender(object.gender),
-    occupation: parseOccupation(object.occupation)
+    occupation: parseOccupation(object.occupation),
+    entries: []
   };
 };
 

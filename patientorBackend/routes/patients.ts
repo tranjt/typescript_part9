@@ -4,6 +4,15 @@ import { toNewPatientEntry } from '../utils/helper';
 
 const router = express.Router();
 
+router.get('/:id', (req, res) => {
+  const patient = patientsService.getPatienByID(req.params.id);
+  if (!patient) {
+    res.status(400).json('error: patient not found');
+  }
+  res.json(patient);
+});
+
+
 router.get('/', (_req, res) => {
   res.send(patientsService.getNonSensitivePatientData());
 });
@@ -19,5 +28,7 @@ router.post('/', (req, res) => {
     res.status(400).send(e.message);
   }
 });
+
+
 
 export default router;
