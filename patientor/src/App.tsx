@@ -5,13 +5,14 @@ import { Button, Divider, Header, Container } from "semantic-ui-react";
 
 import { apiBaseUrl } from "./constants";
 import { useStateValue, setPatientList, updatePatientInfo } from "./state";
-import { Patient } from "./types";
+import { Patient, Diagnosis } from "./types";
 
 import PatientListPage from "./PatientListPage";
 import PatientInfo from "./components/PatientInfo";
 
 const App: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
+  const [diagnosisList, setDiagnosisList] = React.useState<Diagnosis[]>([]);
   React.useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     axios.get<void>(`${apiBaseUrl}/ping`);
@@ -21,26 +22,34 @@ const App: React.FC = () => {
         const { data: patientListFromApi } = await axios.get<Patient[]>(
           `${apiBaseUrl}/patients`
         );
-        
+
         dispatch(setPatientList(patientListFromApi));
       } catch (e) {
         console.error(e);
-      }      
+      }
     };
+
+    const fetchDiagnosisList = async () => {
+      return await axios.get<Diagnosis[]>(
+        `${apiBaseUrl}/diagnoses`
+      );
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     fetchPatientList();
+
+    fetchDiagnosisList()
+      .then((res) => {
+        setDiagnosisList(res.data);
+      }).catch((error) => {
+        console.error(error);
+      });
   }, [dispatch]);
 
   const fetchPatientInfo = async (id: string) => {
-    try {
-      const { data: patientFromApi } = await axios.get<Patient>(
+    return await axios.get<Patient>(
         `${apiBaseUrl}/patients/${id}`
-      );
-      
-      dispatch(updatePatientInfo(patientFromApi));      
-    } catch (e) {
-      console.error(e);
-    }    
+      );      
   };
 
   const containsSSN = (id: string): boolean => {
@@ -48,10 +57,16 @@ const App: React.FC = () => {
   };
 
   const handleFullPatientInfo = (id: string): Patient => {
-    if (!containsSSN(id)) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      fetchPatientInfo(id);
+
+    if (!containsSSN(id)) {   
+      fetchPatientInfo(id)
+      .then((res) => {
+        dispatch(updatePatientInfo(res.data));
+      }).catch((error) => {
+        console.error(error);
+      });
     }
+    
     return patients[id];
   };
 
@@ -71,7 +86,7 @@ const App: React.FC = () => {
         <Divider hidden />
         <Switch>
           <Route path="/patients/:id">
-            <PatientInfo patient={patient} />
+            <PatientInfo patient={patient} diagnosisList={diagnosisList} />
           </Route>
           <Route path="/" render={() => <PatientListPage />} />
         </Switch>

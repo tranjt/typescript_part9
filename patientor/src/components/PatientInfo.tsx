@@ -1,12 +1,13 @@
 import React from "react";
 import { Icon } from 'semantic-ui-react';
-import { Patient } from "../types";
+import { Patient, Diagnosis } from "../types";
 
 interface patientProps {
-  patient: Patient | null
+  patient: Patient | null;
+  diagnosisList: Diagnosis [];
 }
 
-const PatientInfo: React.FC<patientProps> = ({ patient }) => {
+const PatientInfo: React.FC<patientProps> = ({ patient, diagnosisList }) => {
 
   if (!patient) {
     return (
@@ -23,11 +24,18 @@ const PatientInfo: React.FC<patientProps> = ({ patient }) => {
     return <Icon name="venus" size='large' />;
   };
 
-  const buildDiagnosisList = (diagnosis: string[] | undefined) => {
-    let listItems;
+  const getDiagnosisName = (code: string): string | undefined =>  {
+    const diagnosis =  diagnosisList.find(d => d.code === code);
     if (diagnosis) {
-      listItems = diagnosis.map(dia => {
-        return<li key={dia}>{dia}</li>;
+      return diagnosis.name;
+    }
+  };   
+
+  const buildDiagnosisList = (diagnosisCodes: string[] | undefined) => {
+    let listItems;
+    if (diagnosisCodes) {
+      listItems = diagnosisCodes.map(diaCode => {
+        return<li key={diaCode}>{diaCode} {getDiagnosisName(diaCode)}</li>;
       });            
     }    
     return <ul>{listItems}</ul>;
