@@ -44,6 +44,22 @@ const parseOccupation = (occupation) => {
     }
     return occupation;
 };
+const isEntryType = (param) => {
+    return Object.values(types_1.EntryType).includes(param);
+};
+const parseEntries = (entries) => {
+    if (entries.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        entries.forEach((entry) => {
+            if (!isEntryType(entry.type)) {
+                throw new Error('Incorrect entry type:' + entry.type);
+            }
+        });
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return entries;
+    }
+    return [];
+};
 const toNewPatientEntry = (object) => {
     return {
         name: parseName(object.name),
@@ -51,7 +67,7 @@ const toNewPatientEntry = (object) => {
         ssn: parseSSN(object.ssn),
         gender: parseGender(object.gender),
         occupation: parseOccupation(object.occupation),
-        entries: []
+        entries: parseEntries(object.entries)
     };
 };
 exports.toNewPatientEntry = toNewPatientEntry;

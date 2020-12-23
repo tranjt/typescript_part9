@@ -25,7 +25,7 @@ const App: React.FC = () => {
         dispatch(setPatientList(patientListFromApi));
       } catch (e) {
         console.error(e);
-      }
+      }      
     };
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     fetchPatientList();
@@ -40,7 +40,7 @@ const App: React.FC = () => {
       dispatch(updatePatientInfo(patientFromApi));      
     } catch (e) {
       console.error(e);
-    }
+    }    
   };
 
   const containsSSN = (id: string): boolean => {

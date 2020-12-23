@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { NewPatientEntry, Gender } from '../types';
+import { NewPatientEntry, Gender, Entry, EntryType } from '../types';
 
 
 const isString = (text: any): text is string => {
@@ -34,7 +34,7 @@ const parseSSN = (ssn: any): string => {
 };
 
 const isGender = (param: any): param is Gender => {
-  return Object.values(Gender).includes(param); 
+  return Object.values(Gender).includes(param);
 };
 const parseGender = (gender: any): string => {
   if (!gender || !isGender(gender)) {
@@ -50,6 +50,24 @@ const parseOccupation = (occupation: any): string => {
   return occupation;
 };
 
+const isEntryType = (param: any): param is EntryType => {
+  return Object.values(EntryType).includes(param);
+};
+
+const parseEntries = (entries: any): Entry[] => {
+  if (entries.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    entries.forEach((entry: Entry) => {
+      if (!isEntryType(entry.type)) {
+        throw new Error('Incorrect entry type:' + entry.type);
+      }    
+    });
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return entries;
+  }
+  return [];
+};
+
 export const toNewPatientEntry = (object: any): NewPatientEntry => {
   return {
     name: parseName(object.name),
@@ -57,7 +75,7 @@ export const toNewPatientEntry = (object: any): NewPatientEntry => {
     ssn: parseSSN(object.ssn),
     gender: parseGender(object.gender),
     occupation: parseOccupation(object.occupation),
-    entries: []
+    entries: parseEntries(object.entries)
   };
 };
 
