@@ -1,20 +1,19 @@
 import React from "react";
-import { Entry, Diagnosis } from "../types";
+import { Entry } from "../types";
 import EntryView from "./EntryView";
 
 interface entryProps {
-  entries: Entry[] | null;
-  diagnosisList: Diagnosis[];
+  entries: Entry[] | null;  
 }
 
-const EntryList: React.FC<entryProps> = ({ entries, diagnosisList }) => {
+const EntryList: React.FC<entryProps> = ({ entries }) => {
 
   const renderEntries = () => {    
     let entriesList;
     
     if (entries) {
       entriesList = entries.map(entry => {        
-        return <EntryView key={entry.date} entry={entry} diagnosisList={diagnosisList}/>;
+        return <EntryView key={entry.date} entry={entry} />;
       });
     }
     return entriesList;

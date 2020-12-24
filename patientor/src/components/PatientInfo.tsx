@@ -1,14 +1,13 @@
 import React from "react";
 import { Icon } from "semantic-ui-react";
-import { Patient, Diagnosis } from "../types";
+import { Patient } from "../types";
 import EntryList from "./EntryList";
 
 interface patientProps {
-  patient: Patient | null;
-  diagnosisList: Diagnosis [];
+  patient: Patient | null; 
 }
 
-const PatientInfo: React.FC<patientProps> = ({ patient, diagnosisList }) => {
+const PatientInfo: React.FC<patientProps> = ({ patient }) => {
 
   if (!patient) {
     return (
@@ -31,7 +30,7 @@ const PatientInfo: React.FC<patientProps> = ({ patient, diagnosisList }) => {
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
       <h3>entries</h3>     
-      <EntryList entries={patient.entries} diagnosisList={diagnosisList} />
+      <EntryList entries={patient.entries}  />
     </div>
   );
 };

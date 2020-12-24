@@ -4,69 +4,49 @@ import { Route, Link, Switch, useRouteMatch } from "react-router-dom";
 import { Button, Divider, Header, Container } from "semantic-ui-react";
 
 import { apiBaseUrl } from "./constants";
-import { useStateValue, setPatientList, updatePatientInfo } from "./state";
-import { Patient, Diagnosis } from "./types";
-
+import { useStateValue, setPatientList, updatePatientInfo, setDiagonsisList } from "./state";
+import { Patient } from "./types";
+import patientService from './service/patient';
 import PatientListPage from "./PatientListPage";
 import PatientInfo from "./components/PatientInfo";
 
+
 const App: React.FC = () => {
   const [{ patients }, dispatch] = useStateValue();
-  const [diagnosisList, setDiagnosisList] = React.useState<Diagnosis[]>([]);
   React.useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    axios.get<void>(`${apiBaseUrl}/ping`);
-
-    const fetchPatientList = async () => {
-      try {
-        const { data: patientListFromApi } = await axios.get<Patient[]>(
-          `${apiBaseUrl}/patients`
-        );
-
-        dispatch(setPatientList(patientListFromApi));
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    const fetchDiagnosisList = async () => {
-      return await axios.get<Diagnosis[]>(
-        `${apiBaseUrl}/diagnoses`
-      );
-    };
-
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    fetchPatientList();
-
-    fetchDiagnosisList()
+    axios.get<void>(`${apiBaseUrl}/ping`);   
+    
+    patientService.fetchPatientList()
       .then((res) => {
-        setDiagnosisList(res.data);
+        dispatch(setPatientList(res.data));
       }).catch((error) => {
         console.error(error);
       });
+
+    patientService.fetchDiagnosisList()
+      .then((res) => {        
+        dispatch(setDiagonsisList(res.data));
+      }).catch((error) => {
+        console.error(error);
+      });
+
   }, [dispatch]);
 
-  const fetchPatientInfo = async (id: string) => {
-    return await axios.get<Patient>(
-        `${apiBaseUrl}/patients/${id}`
-      );      
-  };
 
   const containsSSN = (id: string): boolean => {
     return "ssn" in patients[id];
   };
 
   const handleFullPatientInfo = (id: string): Patient => {
-
-    if (!containsSSN(id)) {   
-      fetchPatientInfo(id)
-      .then((res) => {
-        dispatch(updatePatientInfo(res.data));
-      }).catch((error) => {
-        console.error(error);
-      });
+    if (!containsSSN(id)) {
+      patientService.fetchPatientInfo(id)
+        .then((res) => {
+          dispatch(updatePatientInfo(res.data));
+        }).catch((error) => {
+          console.error(error);
+        });
     }
-    
     return patients[id];
   };
 
@@ -86,7 +66,7 @@ const App: React.FC = () => {
         <Divider hidden />
         <Switch>
           <Route path="/patients/:id">
-            <PatientInfo patient={patient} diagnosisList={diagnosisList} />
+            <PatientInfo patient={patient} />
           </Route>
           <Route path="/" render={() => <PatientListPage />} />
         </Switch>

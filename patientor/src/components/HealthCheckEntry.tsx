@@ -1,31 +1,13 @@
 import React from "react";
-import { HealthCheckEntry, Diagnosis } from "../types";
+import { HealthCheckEntry } from "../types";
 import { Segment, Icon } from "semantic-ui-react";
+import EntryCodeList from "./EntryCodeList";
 
 interface entryProps {
-  entry: HealthCheckEntry;
-  diagnosisList: Diagnosis[];
+  entry: HealthCheckEntry;  
 }
 
-const HealthCheckEntrySegment: React.FC<entryProps> = ({ entry, diagnosisList }) => {
-  
-
-  const getDiagnosisName = (code: string): string | undefined => {
-    const diagnosis = diagnosisList.find(d => d.code === code);
-    if (diagnosis) {
-      return diagnosis.name;
-    }
-  };
-
-  const buildDiagnosisList = (diagnosisCodes: string[] | undefined) => {
-    let listItems;
-    if (diagnosisCodes) {
-      listItems = diagnosisCodes.map(diaCode => {
-        return <li key={diaCode}>{diaCode} {getDiagnosisName(diaCode)}</li>;
-      });
-    }
-    return <ul>{listItems}</ul>;
-  }; 
+const HealthCheckEntrySegment: React.FC<entryProps> = ({ entry }) => {   
 
   const gethealthCheckRatingColor = () => {
     switch (entry.healthCheckRating) {
@@ -48,7 +30,7 @@ const HealthCheckEntrySegment: React.FC<entryProps> = ({ entry, diagnosisList })
         <h3>{entry.date}  <Icon name="user doctor" size="large" /></h3>
         <p > {entry.description}</p>        
         <Icon color={gethealthCheckRatingColor()} name="heart" />
-        {buildDiagnosisList(entry.diagnosisCodes)}
+        <EntryCodeList diagnosisCodes={entry.diagnosisCodes} />
       </Segment>
     </div>
   );
