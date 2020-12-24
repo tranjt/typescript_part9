@@ -70,7 +70,7 @@ const App: React.FC = () => {
     return patients[id];
   };
 
-  const patientMatch = useRouteMatch<{ id: string }>('/patients/:id');
+  const patientMatch = useRouteMatch<{ id: string }>("/patients/:id");
   const patient = patientMatch
     ? handleFullPatientInfo(patientMatch.params.id)
     : null;

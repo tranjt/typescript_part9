@@ -1,6 +1,7 @@
 import React from "react";
-import { Icon } from 'semantic-ui-react';
+import { Icon } from "semantic-ui-react";
 import { Patient, Diagnosis } from "../types";
+import EntryList from "./EntryList";
 
 interface patientProps {
   patient: Patient | null;
@@ -15,52 +16,22 @@ const PatientInfo: React.FC<patientProps> = ({ patient, diagnosisList }) => {
         loading...
       </div>
     );
-  }
+  }  
 
   const getGenderIcon = () => {
     if (patient.gender === "male") {
-      return <Icon name="mars" size='large' />;
+      return "mars";
     }
-    return <Icon name="venus" size='large' />;
-  };
-
-  const getDiagnosisName = (code: string): string | undefined =>  {
-    const diagnosis =  diagnosisList.find(d => d.code === code);
-    if (diagnosis) {
-      return diagnosis.name;
-    }
-  };   
-
-  const buildDiagnosisList = (diagnosisCodes: string[] | undefined) => {
-    let listItems;
-    if (diagnosisCodes) {
-      listItems = diagnosisCodes.map(diaCode => {
-        return<li key={diaCode}>{diaCode} {getDiagnosisName(diaCode)}</li>;
-      });            
-    }    
-    return <ul>{listItems}</ul>;
-  };
-
-  const renderEntries = () => {    
-    let entriesList;
-    if (patient.entries) {
-      entriesList = patient.entries.map(entry => {
-        return <div key={entry.date}>
-          <p >{entry.date} {entry.description}</p>
-          {buildDiagnosisList(entry.diagnosisCodes)}
-        </div>;
-      });
-    }        
-    return entriesList;
-  };
-
+    return "venus";
+  }; 
+ 
   return (
     <div>
-      <h1>{patient.name} {getGenderIcon()}</h1>
+      <h1>{patient.name}  <Icon name={getGenderIcon()} size="large" /></h1>
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
-      <h3>entries</h3>
-      {renderEntries()}
+      <h3>entries</h3>     
+      <EntryList entries={patient.entries} diagnosisList={diagnosisList} />
     </div>
   );
 };
