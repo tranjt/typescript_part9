@@ -16,7 +16,7 @@ export interface Patient {
 
 export enum Gender {
   Male = 'male',
-  Female = 'female' ,
+  Female = 'female',
   Other = 'other'
 }
 
@@ -61,7 +61,7 @@ interface OccupationalHealthcareEntry extends BaseEntry {
     startDate: string;
     endDate: string;
   };
-} 
+}
 
 export type Entry =
   | HospitalEntry
@@ -71,4 +71,4 @@ export type Entry =
 
 export type NewPatientEntry = Omit<Patient, 'id'>;
 
-export type PublicPatient = Omit<Patient, 'ssn' | 'entries' >;
+export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;

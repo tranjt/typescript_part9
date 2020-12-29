@@ -23,8 +23,17 @@ const addPatient = (entry) => {
 const getPatienByID = (id) => {
     return patients.find(p => p.id === id);
 };
+const addDianoseEntry = (entry, id) => {
+    patients.forEach((patient) => {
+        if (patient.id === id && entry) {
+            patient.entries.push(entry);
+        }
+        return patient;
+    });
+};
 exports.default = {
     getNonSensitivePatientData,
     addPatient,
-    getPatienByID
+    getPatienByID,
+    addDianoseEntry
 };

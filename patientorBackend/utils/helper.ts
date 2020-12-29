@@ -60,7 +60,7 @@ const parseEntries = (entries: any): Entry[] => {
     entries.forEach((entry: Entry) => {
       if (!isEntryType(entry.type)) {
         throw new Error('Incorrect entry type:' + entry.type);
-      }    
+      }
     });
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return entries;
@@ -78,5 +78,6 @@ export const toNewPatientEntry = (object: any): NewPatientEntry => {
     entries: parseEntries(object.entries)
   };
 };
+
 
 
