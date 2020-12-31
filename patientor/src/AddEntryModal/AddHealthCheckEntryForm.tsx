@@ -4,6 +4,7 @@ import { Grid, Button } from "semantic-ui-react";
 import { useStateValue, } from "../state";
 import { TextField, DiagnosisSelection, NumberField } from "../AddPatientModal/FormField";
 import { HealthCheckEntry, HealthCheckRating } from '../types';
+import { isValidDate } from '../utils/helper';
 
 export type HealthCheckEntryFormValues = Omit<HealthCheckEntry, "id">;
 
@@ -21,15 +22,26 @@ const AddHealthCheckEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         description: "",
         date: "",
         specialist: "",
-        healthCheckRating: HealthCheckRating.Healthy,      
+        healthCheckRating: HealthCheckRating.Healthy,
       }}
       onSubmit={onSubmit}
       validate={values => {
         const requiredError = "Field is required";
+        const invadlidDate = "Date is not valid";
         const errors: { [field: string]: string } = {};
+        if (!values.description) {
+          errors.description = requiredError;
+        }
         if (!values.date) {
           errors.date = requiredError;
+        }        
+        if (!values.specialist) {
+          errors.specialist = requiredError;
+        }        
+        if (!isValidDate(values.date)) {
+          errors.date = invadlidDate;
         }
+        return errors;
       }}
     >
       {({ isValid, dirty, setFieldValue, setFieldTouched }) => {
@@ -52,7 +64,7 @@ const AddHealthCheckEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               placeholder="Specialist"
               name="specialist"
               component={TextField}
-            />           
+            />
             <Field
               label="healthCheckRating"
               name="healthCheckRating"
