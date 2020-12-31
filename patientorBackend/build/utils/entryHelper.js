@@ -57,13 +57,15 @@ const parseDischarge = (discharge) => {
     return discharge;
 };
 const isHealthCheckRating = (param) => {
-    return Object.values(types_1.HealthCheckRating).includes(param);
+    return param in types_1.HealthCheckRating;
 };
 const parseHealthCheckRating = (healthCheckRating) => {
-    if (!healthCheckRating || !isHealthCheckRating(healthCheckRating)) {
-        throw new Error('Incorrect or missing healthCheckRating:' + healthCheckRating);
+    if (isHealthCheckRating(healthCheckRating)) {
+        return healthCheckRating;
     }
-    return healthCheckRating;
+    else {
+        throw new Error('Incorrect or missing healthCheckRating: ' + healthCheckRating);
+    }
 };
 const parseEmployerName = (employerName) => {
     if (!employerName || !isString(employerName)) {

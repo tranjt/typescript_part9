@@ -48,7 +48,7 @@ const isEntryType = (param) => {
     return Object.values(types_1.EntryType).includes(param);
 };
 const parseEntries = (entries) => {
-    if (entries.length > 0) {
+    if (entries) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         entries.forEach((entry) => {
             if (!isEntryType(entry.type)) {

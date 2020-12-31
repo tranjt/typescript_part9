@@ -64,15 +64,17 @@ const parseDischarge = (discharge: any): { date: string, criteria: string } => {
   return discharge;
 };
 
-const isHealthCheckRating = (param: any): param is HealthCheckRating => {
-  return Object.values(HealthCheckRating).includes(param);
+
+const isHealthCheckRating = (param: any): boolean => {
+  return param in HealthCheckRating;
 };
 
-const parseHealthCheckRating = (healthCheckRating: any): HealthCheckRating => {
-  if (!healthCheckRating || !isHealthCheckRating(healthCheckRating)) {
-    throw new Error('Incorrect or missing healthCheckRating:' + healthCheckRating);
+const parseHealthCheckRating = (healthCheckRating: any): number => {
+  if (isHealthCheckRating(healthCheckRating)) {
+    return healthCheckRating;
+  } else {
+    throw new Error('Incorrect or missing healthCheckRating: ' + healthCheckRating);
   }
-  return healthCheckRating;
 };
 
 const parseEmployerName = (employerName: any): string => {
