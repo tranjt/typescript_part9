@@ -13,7 +13,7 @@ const EntryList: React.FC<entryProps> = ({ entries }) => {
     
     if (entries) {
       entriesList = entries.map(entry => {        
-        return <EntryView key={entry.date} entry={entry} />;
+        return <EntryView key={entry.id} entry={entry} />;
       });
     }
     return entriesList;
