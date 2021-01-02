@@ -5,8 +5,10 @@ import { Patient } from "../types";
 import EntryList from "./EntryList";
 import AddHealthCheckEntryModal from "../AddEntryModal/HealthCheckModal";
 import AddHospitalEntryModal from "../AddEntryModal/HospitalEntryModal";
+import AddOccupationalHealthcareModal from "../AddEntryModal/OccupationalHealthcareModal";
 import { HealthCheckEntryFormValues } from "../AddEntryModal/AddHealthCheckEntryForm";
-import { HospitalEntryFormValues } from '../AddEntryModal/AddHospitalEntryForm';
+import { HospitalEntryFormValues } from "../AddEntryModal/AddHospitalEntryForm";
+import { OccupationalHealthcareEntryFormValues } from "../AddEntryModal/AddOccupationalHealthcareEntry";
 import { Button } from "semantic-ui-react";
 import patientService from "../service/patient";
 
@@ -19,6 +21,7 @@ const PatientInfo: React.FC<patientProps> = ({ patient }) => {
 
   const [modalHealthCheckOpen, setModalHealthCheckOpen] = React.useState<boolean>(false);
   const [modalHospitalEntryOpen, setModalHospitalEntryOpen] = React.useState<boolean>(false);
+  const [modalOccupationalHealthcareOpen, setModalOccupationalHealthcareOpen] = React.useState<boolean>(false);
 
   const openHealthCheckEntryModal = (): void => {
     setModalHealthCheckOpen(true);
@@ -34,6 +37,16 @@ const PatientInfo: React.FC<patientProps> = ({ patient }) => {
     setModalHospitalEntryOpen(false);
   };
 
+  const openOccupationalHealthcareModal = (): void => {
+    setModalOccupationalHealthcareOpen(true);
+  };
+  const closeOccupationalHealthcareModal = (): void => {
+    setModalOccupationalHealthcareOpen(false);
+  };
+
+
+
+
   if (!patient) {
     return (
       <div>
@@ -43,7 +56,7 @@ const PatientInfo: React.FC<patientProps> = ({ patient }) => {
   }
 
 
-  const submitNewHealthCheckEntry = (values: HealthCheckEntryFormValues) => {  
+  const submitNewHealthCheckEntry = (values: HealthCheckEntryFormValues) => {
     patientService.addEntry(patient.id, values)
       .then((res) => {
         patient.entries.push(res.data);
@@ -56,7 +69,7 @@ const PatientInfo: React.FC<patientProps> = ({ patient }) => {
   };
 
 
-  const submitHospitalEntryEntry = (values: HospitalEntryFormValues) => {   
+  const submitHospitalEntry = (values: HospitalEntryFormValues) => {
     patientService.addEntry(patient.id, values)
       .then((res) => {
         patient.entries.push(res.data);
@@ -66,6 +79,18 @@ const PatientInfo: React.FC<patientProps> = ({ patient }) => {
       });
 
     closeHospitalEntryModal();
+  };
+
+  const submitOccupationalHealthcareEntry = (values: OccupationalHealthcareEntryFormValues) => {
+    patientService.addEntry(patient.id, values)
+      .then((res) => {
+        patient.entries.push(res.data);
+        dispatch({ type: "UPDATE_PATIENT_INFO", payload: patient });
+      }).catch((error) => {
+        console.error(error);
+      });
+
+    closeOccupationalHealthcareModal();
   };
 
 
@@ -87,10 +112,17 @@ const PatientInfo: React.FC<patientProps> = ({ patient }) => {
 
       <AddHospitalEntryModal
         modalOpen={modalHospitalEntryOpen}
-        onSubmit={submitHospitalEntryEntry}
+        onSubmit={submitHospitalEntry}
         onClose={closeHospitalEntryModal}
       />
       <Button onClick={() => openHospitalEntryModal()}>Add New Hospital Entry</Button>
+
+      <AddOccupationalHealthcareModal
+        modalOpen={modalOccupationalHealthcareOpen}
+        onSubmit={submitOccupationalHealthcareEntry}
+        onClose={closeOccupationalHealthcareModal}
+      />
+      <Button onClick={() => openOccupationalHealthcareModal()}>Add New Occupational Healthcare Entry</Button>
 
       <h1>{patient.name}  <Icon name={getGenderIcon()} size="large" /></h1>
       <p>ssn: {patient.ssn}</p>
